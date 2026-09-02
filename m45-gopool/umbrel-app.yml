@@ -1,0 +1,37 @@
+manifestVersion: 1
+id: m45-gopool
+category: bitcoin
+name: M45 goPool
+version: "0.3.2-rodb0"
+tagline: Run a private solo Bitcoin mining pool
+description: >-
+  M45 goPool connects your miners directly to your Umbrel Bitcoin Node and
+  provides Stratum v1, per-worker statistics, saved workers, best-share
+  tracking, and a local status dashboard.
+
+
+  This community package is configured for Bitcoin mainnet. It charges a 2%
+  pool fee to 3B86bWqfjdQeLEr8nkeeWU6ygksc2K7MoL; the remaining 98% of a
+  block reward is paid to the valid Bitcoin address supplied as the miner's
+  Stratum username. The optional operator-donation split is disabled.
+developer: M45Core
+website: https://github.com/M45Core/M45-goPool
+submitter: M45Core
+submission: https://github.com/M45Core/M45-Umbrel-Community-App-Store
+dependencies:
+  - bitcoin
+repo: https://github.com/M45Core/M45-goPool
+support: https://github.com/M45Core/M45-goPool/issues
+port: 23080
+icon: https://raw.githubusercontent.com/M45Core/M45-goPool/main/data/M45CORE-1024.PNG
+gallery: []
+path: ""
+releaseNotes: >-
+  Initial M45Core community-store package. The bootstrap package uses RodB's
+  immutable multi-platform goPool v0.3.2 image; the next M45-goPool tag will
+  switch the package to M45Core's own GHCR image automatically.
+defaultUsername: ""
+defaultPassword: ""
+backupIgnore:
+  - data/logs
+  - data/certbot-webroot

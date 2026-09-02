@@ -1,0 +1,80 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: m45-gopool_server_1
+      APP_PORT: 8080
+
+  init:
+    image: alpine:3.22.1@sha256:4bcff63911fcb4448bd4fdacec207030997caf25e9bea4045fa6c8c44de311d1
+    user: "root"
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -eu
+        if [ "$${APP_BITCOIN_NETWORK}" != "mainnet" ]; then
+          echo "M45 goPool currently requires the Umbrel Bitcoin Node to use mainnet." >&2
+          exit 1
+        fi
+        mkdir -p /data/config
+        if [ ! -s /data/config/config.toml ]; then
+          sed \
+            -e "s|__BITCOIN_NODE_IP__|$${APP_BITCOIN_NODE_IP}|g" \
+            -e "s|__BITCOIN_RPC_PORT__|$${APP_BITCOIN_RPC_PORT}|g" \
+            -e "s|__BITCOIN_ZMQ_RAWBLOCK_PORT__|$${APP_BITCOIN_ZMQ_RAWBLOCK_PORT}|g" \
+            -e "s|__BITCOIN_ZMQ_HASHBLOCK_PORT__|$${APP_BITCOIN_ZMQ_HASHBLOCK_PORT}|g" \
+            /data/config/config.toml.default > /data/config/config.toml
+        fi
+        case "$${APP_BITCOIN_RPC_USER}$${APP_BITCOIN_RPC_PASS}" in
+          *"'"*)
+            echo "Umbrel Bitcoin RPC credentials contain an unsupported quote character." >&2
+            exit 1
+            ;;
+        esac
+        umask 077
+        {
+          printf "rpc_user = '%s'\n" "$${APP_BITCOIN_RPC_USER}"
+          printf "rpc_pass = '%s'\n" "$${APP_BITCOIN_RPC_PASS}"
+        } > /data/config/umbrel-secrets.toml
+        chmod 0644 /data/config/config.toml
+        chmod 0600 /data/config/umbrel-secrets.toml
+        chown -R 1000:1000 /data
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    environment:
+      APP_BITCOIN_NETWORK: ${APP_BITCOIN_NETWORK}
+      APP_BITCOIN_NODE_IP: ${APP_BITCOIN_NODE_IP}
+      APP_BITCOIN_RPC_PORT: ${APP_BITCOIN_RPC_PORT}
+      APP_BITCOIN_RPC_USER: ${APP_BITCOIN_RPC_USER}
+      APP_BITCOIN_RPC_PASS: ${APP_BITCOIN_RPC_PASS}
+      APP_BITCOIN_ZMQ_RAWBLOCK_PORT: ${APP_BITCOIN_ZMQ_RAWBLOCK_PORT}
+      APP_BITCOIN_ZMQ_HASHBLOCK_PORT: ${APP_BITCOIN_ZMQ_HASHBLOCK_PORT}
+
+  server:
+    image: rodb2008com/gopool:v0.3.2-RodB0@sha256:1da61422925981cd39a834f17fedd6fdadd8deaef8835b2684350ce2192db62e
+    user: "1000:1000"
+    init: true
+    restart: on-failure
+    stop_grace_period: 30s
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    ports:
+      - "23456:23456/tcp"
+      - "24333:24333/tcp"
+    volumes:
+      - ${APP_DATA_DIR}/data:/app/data
+    command:
+      - -stdout
+      - -pool-log=/dev/null
+      - -network=mainnet
+      - -rpc-url=http://${APP_BITCOIN_NODE_IP}:${APP_BITCOIN_RPC_PORT}
+      - -secrets=/app/data/config/umbrel-secrets.toml
+      - -allow-rpc-creds
+      - -listen=:23456
+      - -status=:8080
+      - -status-tls=
+      - -stratum-tls=:24333
+      - -saved-workers-local-noauth

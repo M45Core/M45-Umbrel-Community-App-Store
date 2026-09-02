@@ -1,0 +1,47 @@
+# M45 goPool defaults for umbrelOS.
+# This template is used only for a fresh install. Changes made through the
+# goPool admin UI persist in data/config/config.toml across restarts/upgrades.
+
+[branding]
+  fiat_currency = "usd"
+  pool_donation_address = ""
+  server_location = ""
+  status_brand_domain = ""
+  status_brand_name = "M45Core"
+  status_connect_miner_title_extra = ""
+  status_connect_miner_title_extra_url = ""
+  status_tagline = "Solo Mining Pool on Umbrel"
+
+[logging]
+  debug = false
+  net_debug = false
+
+[mining]
+  operator_donation_address = ""
+  operator_donation_name = ""
+  operator_donation_percent = 0.0
+  operator_donation_url = ""
+  pool_entropy = "umbrel"
+  pool_fee_percent = 2.0
+  pooltag_prefix = "M45"
+
+[node]
+  payout_address = "3B86bWqfjdQeLEr8nkeeWU6ygksc2K7MoL"
+  rpc_cookie_path = ""
+  rpc_url = "http://__BITCOIN_NODE_IP__:__BITCOIN_RPC_PORT__"
+  zmq_hashblock_addr = "tcp://__BITCOIN_NODE_IP__:__BITCOIN_ZMQ_HASHBLOCK_PORT__"
+  zmq_rawblock_addr = "tcp://__BITCOIN_NODE_IP__:__BITCOIN_ZMQ_RAWBLOCK_PORT__"
+
+[server]
+  pool_listen = ":23456"
+  status_listen = ":8080"
+  status_public_url = ""
+  status_tls_listen = ""
+
+[stratum]
+  safe_mode = false
+  stratum_password = ""
+  stratum_password_enabled = false
+  stratum_password_public = false
+  stratum_tls_listen = ":24333"
+  stratum_v2_listen = ""

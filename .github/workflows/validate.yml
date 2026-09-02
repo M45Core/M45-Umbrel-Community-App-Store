@@ -1,0 +1,43 @@
+name: Validate Umbrel store
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out store
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Validate store policy
+        run: python3 scripts/validate-store.py
+
+      - name: Validate scripts
+        shell: bash
+        run: |
+          bash -n scripts/umbrel-container.sh
+          python3 -m py_compile \
+            scripts/update-gopool-release.py \
+            scripts/validate-store.py
+
+      - name: Validate Compose rendering
+        shell: bash
+        env:
+          APP_DATA_DIR: /tmp/m45-gopool
+          APP_BITCOIN_NETWORK: mainnet
+          APP_BITCOIN_NODE_IP: 10.21.21.8
+          APP_BITCOIN_RPC_PORT: '8332'
+          APP_BITCOIN_RPC_USER: umbrel
+          APP_BITCOIN_RPC_PASS: validation-only
+          APP_BITCOIN_ZMQ_RAWBLOCK_PORT: '28332'
+          APP_BITCOIN_ZMQ_HASHBLOCK_PORT: '28334'
+        # Umbrel injects the app_proxy image at runtime, so local Compose must
+        # skip only the standalone image/build consistency check.
+        run: docker compose --file m45-gopool/docker-compose.yml config --no-consistency --quiet
