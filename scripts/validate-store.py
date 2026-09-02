@@ -43,12 +43,18 @@ def main() -> int:
     manifest = (APP / "umbrel-app.yml").read_text(encoding="utf-8")
     compose = (APP / "docker-compose.yml").read_text(encoding="utf-8")
     config = (APP / "data/config/config.toml.default").read_text(encoding="utf-8")
+    version_file = (APP / "VERSION").read_text(encoding="utf-8").strip()
+    manifest_version_match = re.search(r'^version:\s*["\']?([^"\'\n]+)', manifest, re.MULTILINE)
 
     require(re.search(r'^id:\s*["\']?m45["\']?\s*$', store, re.MULTILINE) is not None,
             "store id must be m45", errors)
     require(re.search(rf"^id:\s*{APP_ID}\s*$", manifest, re.MULTILINE) is not None,
             f"app id must be {APP_ID}", errors)
     require("manifestVersion: 1" in manifest, "manifestVersion must be 1", errors)
+    require(manifest_version_match is not None, "manifest version is missing", errors)
+    if manifest_version_match is not None:
+        require(version_file == f"v{manifest_version_match.group(1)}",
+                "VERSION must match the manifest version", errors)
     require("dependencies:\n  - bitcoin" in manifest, "Bitcoin dependency is missing", errors)
     require("port: 23080" in manifest, "dashboard port must be 23080", errors)
     require("website: https://m45core.com/umbrel" in manifest,

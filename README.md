@@ -117,8 +117,11 @@ For each semantic release tag, the source workflow:
 4. dispatches the resulting multi-platform digest to this repository.
 
 This repository verifies the source tag and image digest, updates the app
-version/release notes/image pin, validates the package, and commits the update
-with its own `GITHUB_TOKEN`. It can also be run manually for an existing tag.
+release notes/image pin, validates the package, and commits the update. The
+Umbrel package version is intentionally independent of the goPool source tag;
+the tagged source's `UMBREL_VERSION` file supplies it. This first package is
+`0.1.0` while its source release is `v0.3.5`. The workflow can also be run
+manually for an existing tag and package version.
 
 One-time setup:
 

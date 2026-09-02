@@ -24,8 +24,10 @@ jobs:
         run: |
           bash -n scripts/umbrel-container.sh
           python3 -m py_compile \
+            scripts/test-update-gopool-release.py \
             scripts/update-gopool-release.py \
             scripts/validate-store.py
+          python3 scripts/test-update-gopool-release.py
 
       - name: Validate Compose rendering
         shell: bash

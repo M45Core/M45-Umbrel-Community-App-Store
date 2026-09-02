@@ -103,6 +103,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--app-dir", type=Path, required=True)
     parser.add_argument("--tag", required=True)
+    parser.add_argument("--umbrel-version", required=True)
     parser.add_argument("--image", required=True)
     parser.add_argument("--digest", required=True)
     parser.add_argument("--release-notes-file", type=Path, required=True)
@@ -113,6 +114,9 @@ def main() -> None:
     args = parse_args()
     if RELEASE_TAG.fullmatch(args.tag) is None:
         raise SystemExit(f"invalid release tag: {args.tag}")
+    umbrel_tag = args.umbrel_version if args.umbrel_version.startswith("v") else f"v{args.umbrel_version}"
+    if RELEASE_TAG.fullmatch(umbrel_tag) is None:
+        raise SystemExit(f"invalid Umbrel package version: {args.umbrel_version}")
     if args.image != EXPECTED_IMAGE:
         raise SystemExit(f"unexpected image: {args.image}; expected {EXPECTED_IMAGE}")
     if DIGEST.fullmatch(args.digest) is None:
@@ -139,11 +143,11 @@ def main() -> None:
     image_ref = f"{args.image}:{args.tag}@{args.digest}"
     update_manifest(
         manifest,
-        args.tag,
+        umbrel_tag,
         args.release_notes_file.read_text(encoding="utf-8"),
     )
     update_compose(compose, image_ref)
-    (app_dir / "VERSION").write_text(f"{args.tag}\n", encoding="utf-8")
+    (app_dir / "VERSION").write_text(f"{umbrel_tag}\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
