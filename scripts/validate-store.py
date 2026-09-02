@@ -51,6 +51,8 @@ def main() -> int:
     require("manifestVersion: 1" in manifest, "manifestVersion must be 1", errors)
     require("dependencies:\n  - bitcoin" in manifest, "Bitcoin dependency is missing", errors)
     require("port: 23080" in manifest, "dashboard port must be 23080", errors)
+    require("website: https://m45core.com/umbrel" in manifest,
+            "manifest website must point to the public Umbrel guide", errors)
     require("gallery: []" in manifest, "gallery must remain empty until current screenshots exist", errors)
     require("APP_HOST: m45-gopool_server_1" in compose, "app_proxy host is incorrect", errors)
     require("APP_PORT: 8080" in compose, "app_proxy port is incorrect", errors)
@@ -80,6 +82,10 @@ def main() -> int:
             "default RPC cookie path is incorrect", errors)
     require('server_location = "Home LAN"' in config,
             "home-LAN location label is missing", errors)
+    require('status_connect_miner_title_extra = "Setup help and shareable guide"' in config,
+            "dashboard setup-guide label is missing", errors)
+    require('status_connect_miner_title_extra_url = "https://m45core.com/umbrel"' in config,
+            "dashboard setup-guide URL is missing", errors)
     require('stratum_tls_listen = ""' in config,
             "Stratum TLS must be disabled by default", errors)
     require("__BITCOIN_NODE_IP__" in config, "Bitcoin node template address is missing", errors)

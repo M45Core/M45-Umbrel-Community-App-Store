@@ -8,8 +8,8 @@
   server_location = "Home LAN"
   status_brand_domain = ""
   status_brand_name = "M45Core"
-  status_connect_miner_title_extra = ""
-  status_connect_miner_title_extra_url = ""
+  status_connect_miner_title_extra = "Setup help and shareable guide"
+  status_connect_miner_title_extra_url = "https://m45core.com/umbrel"
   status_tagline = "Solo Mining Pool on Umbrel"
 
 [logging]

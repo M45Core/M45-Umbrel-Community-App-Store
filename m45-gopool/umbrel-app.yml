@@ -15,7 +15,7 @@ description: >-
   block reward is paid to the valid Bitcoin address supplied as the miner's
   Stratum username. The optional operator-donation split is disabled.
 developer: M45Core
-website: https://github.com/M45Core/M45-goPool
+website: https://m45core.com/umbrel
 submitter: M45Core
 submission: https://github.com/M45Core/M45-Umbrel-Community-App-Store
 dependencies:

@@ -5,10 +5,13 @@ official App Store. It currently packages
 [M45 goPool](https://github.com/M45Core/M45-goPool), a self-hosted solo Bitcoin
 mining pool connected to the Bitcoin Node app on the same Umbrel.
 
+The step-by-step install guide, miner settings, fee disclosure, and quick
+troubleshooting are available at [m45core.com/umbrel](https://m45core.com/umbrel).
+
 ## Add the store to Umbrel
 
-After this repository is published, open the App Store in umbrelOS, choose the
-Community App Stores manager, and add:
+Open the App Store in umbrelOS, open its menu, choose **Community App Stores**,
+and add:
 
 ```text
 https://github.com/M45Core/M45-Umbrel-Community-App-Store
