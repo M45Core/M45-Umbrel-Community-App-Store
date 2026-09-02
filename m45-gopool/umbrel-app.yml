@@ -14,6 +14,9 @@ description: >-
   pool fee to 3B86bWqfjdQeLEr8nkeeWU6ygksc2K7MoL; the remaining 98% of a
   block reward is paid to the valid Bitcoin address supplied as the miner's
   Stratum username. The optional operator-donation split is disabled.
+
+
+  Setup guide and user manual: https://m45core.com/umbrel
 developer: M45Core
 website: https://m45core.com/umbrel
 submitter: M45Core
@@ -21,7 +24,7 @@ submission: https://github.com/M45Core/M45-Umbrel-Community-App-Store
 dependencies:
   - bitcoin
 repo: https://github.com/M45Core/M45-goPool
-support: https://github.com/M45Core/M45-goPool/issues
+support: https://m45core.com/umbrel
 port: 23080
 icon: https://raw.githubusercontent.com/M45Core/M45-goPool/main/data/M45CORE-1024.PNG
 gallery: []

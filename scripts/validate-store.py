@@ -59,6 +59,10 @@ def main() -> int:
     require("port: 23080" in manifest, "dashboard port must be 23080", errors)
     require("website: https://m45core.com/umbrel" in manifest,
             "manifest website must point to the public Umbrel guide", errors)
+    require("support: https://m45core.com/umbrel" in manifest,
+            "manifest support link must open the M45 user manual", errors)
+    require("Setup guide and user manual: https://m45core.com/umbrel" in manifest,
+            "manifest description must show the M45 user manual", errors)
     require("gallery: []" in manifest, "gallery must remain empty until current screenshots exist", errors)
     require("APP_HOST: m45-gopool_server_1" in compose, "app_proxy host is incorrect", errors)
     require("APP_PORT: 8080" in compose, "app_proxy port is incorrect", errors)
