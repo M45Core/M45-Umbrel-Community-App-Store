@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import re
 import shutil
 import subprocess
 import tempfile
@@ -44,6 +45,20 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="m45-umbrel-updater-test-") as temp:
         app_dir = Path(temp) / "m45-gopool"
         shutil.copytree(ROOT / "m45-gopool", app_dir)
+
+        # Keep this fixture independent of the package version currently in
+        # the store so the smoke test remains valid after every release.
+        manifest_path = app_dir / "umbrel-app.yml"
+        manifest = manifest_path.read_text(encoding="utf-8")
+        manifest = re.sub(
+            r'^version:\s*["\']?[^"\'\n]+["\']?\s*$',
+            'version: "0.0.8"',
+            manifest,
+            count=1,
+            flags=re.MULTILINE,
+        )
+        manifest_path.write_text(manifest, encoding="utf-8")
+        (app_dir / "VERSION").write_text("v0.0.8\n", encoding="utf-8")
 
         result = run_update(app_dir, "0.1.0")
         if result.returncode != 0:
