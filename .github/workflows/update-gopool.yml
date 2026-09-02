@@ -21,7 +21,7 @@ on:
         type: string
 
 permissions:
-  contents: write
+  contents: read
   packages: read
 
 concurrency:
@@ -37,8 +37,20 @@ jobs:
       IMAGE_NAME: ${{ github.event.client_payload.image || inputs.image }}
       IMAGE_DIGEST: ${{ github.event.client_payload.digest || inputs.digest }}
     steps:
+      - name: Verify store write token
+        env:
+          UMBREL_STORE_TOKEN: ${{ secrets.UMBREL_STORE_TOKEN }}
+        shell: bash
+        run: |
+          if [[ -z "${UMBREL_STORE_TOKEN}" ]]; then
+            echo "Add UMBREL_STORE_TOKEN with Contents write access to this repository." >&2
+            exit 1
+          fi
+
       - name: Check out store
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ secrets.UMBREL_STORE_TOKEN }}
 
       - name: Validate release inputs
         shell: bash

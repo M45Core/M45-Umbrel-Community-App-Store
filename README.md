@@ -112,11 +112,12 @@ with its own `GITHUB_TOKEN`. It can also be run manually for an existing tag.
 One-time setup:
 
 - Make the `ghcr.io/m45core/m45-gopool` package public so Umbrel can pull it.
-- In `M45Core/M45-goPool`, add `UMBREL_STORE_TOKEN`, a fine-grained token with
-  Contents read/write access to this repository. It is used only to send the
-  `repository_dispatch` event.
-- Enable Actions write access in this repository so its update workflow can
-  commit package metadata.
+- Create `UMBREL_STORE_TOKEN`, a fine-grained token limited to this repository
+  with Contents read/write access. Add the same token as an Actions secret in
+  both `M45Core/M45-goPool` and this repository. The source uses it only to send
+  the `repository_dispatch` event; the store uses it to push its verified
+  metadata commit. This is required because the M45Core organization enforces
+  read-only built-in workflow tokens.
 
 The bootstrap package is pinned to RodB's multi-platform v0.3.2 image so it can
 be tested before M45Core's GHCR package exists. Running the updated source
