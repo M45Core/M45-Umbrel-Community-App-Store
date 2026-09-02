@@ -118,10 +118,10 @@ For each semantic release tag, the source workflow:
 
 This repository verifies the source tag and image digest, updates the app
 release notes/image pin, validates the package, and commits the update. The
-Umbrel package version is intentionally independent of the goPool source tag;
-the tagged source's `UMBREL_VERSION` file supplies it. This first package is
-`0.1.0` while its source release is `v0.3.5`. The workflow can also be run
-manually for an existing tag and package version.
+Umbrel package version can be independent of the goPool source tag; the tagged
+source's `UMBREL_VERSION` file supplies it. Release `v0.1.1` replaces the
+existing `0.1.0` bootstrap package and keeps both version numbers aligned. The
+workflow can also be run manually for an existing tag and package version.
 
 One-time setup:
 
@@ -135,8 +135,8 @@ One-time setup:
 
 The bootstrap package is pinned to RodB's multi-platform v0.3.2 image so it can
 be tested before M45Core's GHCR package exists. Running the updated source
-release workflow for existing tag `v0.3.4` (or creating the next tag) replaces
-that bootstrap image with M45Core's own immutable image automatically.
+release workflow for `v0.1.1` replaces that bootstrap image with M45Core's own
+immutable image automatically.
 
 ## Validation
 
