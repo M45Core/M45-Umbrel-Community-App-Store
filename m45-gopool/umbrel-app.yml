@@ -2,7 +2,7 @@ manifestVersion: 1
 id: m45-gopool
 category: bitcoin
 name: M45 goPool
-version: "0.3.2-rodb0"
+version: "0.3.2-rodb1"
 tagline: Run a private solo Bitcoin mining pool
 description: >-
   M45 goPool connects your miners directly to your Umbrel Bitcoin Node and
@@ -27,9 +27,11 @@ icon: https://raw.githubusercontent.com/M45Core/M45-goPool/main/data/M45CORE-102
 gallery: []
 path: ""
 releaseNotes: >-
-  Initial M45Core community-store package. The bootstrap package uses RodB's
-  immutable multi-platform goPool v0.3.2 image; the next M45-goPool tag will
-  switch the package to M45Core's own GHCR image automatically.
+  Fix fresh-install pool entropy, switch Bitcoin RPC authentication to the
+  mounted Core cookie, set a home-friendly 512-miner connection cap, and remove
+  the self-signed Stratum TLS endpoint. The bootstrap package still uses RodB's
+  immutable multi-platform goPool v0.3.2 image; the next M45-goPool tag switches
+  to M45Core's GHCR image automatically.
 defaultUsername: ""
 defaultPassword: ""
 backupIgnore:

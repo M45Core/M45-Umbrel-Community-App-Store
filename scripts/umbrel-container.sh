@@ -167,7 +167,6 @@ main() {
     url)
       echo "Umbrel:          http://localhost"
       echo "goPool Stratum:  <Docker-host-LAN-IP>:23456"
-      echo "goPool TLS:      <Docker-host-LAN-IP>:24333 (self-signed certificate)"
       ;;
     destroy)
       if [[ "${1:-}" != "--yes" ]]; then

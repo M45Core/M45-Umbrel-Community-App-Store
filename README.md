@@ -33,8 +33,9 @@ supported, for example:
 bc1qexampleaddress.worker-1
 ```
 
-The password may be any value (commonly `x`). Stratum TLS is available on port
-`24333` with a self-signed certificate.
+The password may be any value (commonly `x`). This home-LAN package intentionally
+does not expose Stratum TLS: a self-signed endpoint would add setup friction
+without giving typical ASIC miners meaningful certificate verification.
 
 ## Fee default
 
@@ -47,6 +48,12 @@ Fresh installs default to a 2% pool fee paid to:
 The remaining 98% is paid to the valid Bitcoin address supplied by the miner.
 The separate operator-donation split is disabled. Existing installs keep their
 persisted configuration across app updates.
+
+For local operation, goPool reads Bitcoin Core's rotating RPC cookie from a
+read-only mount instead of copying RPC credentials into its own data. Fresh
+installs also generate a unique pool entropy tag and cap simultaneous miner
+connections at 512, which is generous for a home LAN without retaining the
+server-oriented 50,000-connection default.
 
 ## Persistent Umbrel test container
 
@@ -135,10 +142,9 @@ python3 scripts/validate-store.py
 
 APP_DATA_DIR=/tmp/m45-gopool \
 APP_BITCOIN_NETWORK=mainnet \
+APP_BITCOIN_DATA_DIR=/tmp/bitcoin \
 APP_BITCOIN_NODE_IP=10.21.21.8 \
 APP_BITCOIN_RPC_PORT=8332 \
-APP_BITCOIN_RPC_USER=umbrel \
-APP_BITCOIN_RPC_PASS=validation-only \
 APP_BITCOIN_ZMQ_RAWBLOCK_PORT=28332 \
 APP_BITCOIN_ZMQ_HASHBLOCK_PORT=28334 \
 docker compose --file m45-gopool/docker-compose.yml config --no-consistency --quiet

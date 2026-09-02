@@ -59,12 +59,29 @@ def main() -> int:
     require("container_name:" not in compose, "fixed container names are forbidden", errors)
     require("network_mode:" not in compose, "custom network_mode is not expected", errors)
     require('"23456:23456/tcp"' in compose, "plain Stratum port is missing", errors)
-    require('"24333:24333/tcp"' in compose, "TLS Stratum port is missing", errors)
+    require("24333" not in compose, "self-signed Stratum TLS port must not be published", errors)
+    require("-stratum-tls" not in compose, "Stratum TLS runtime override must remain disabled", errors)
+    require("${APP_BITCOIN_DATA_DIR}:/bitcoin:ro" in compose,
+            "Bitcoin data must be mounted read-only for RPC cookie auth", errors)
+    require("- -rpc-cookie=/bitcoin/.cookie" in compose,
+            "Bitcoin RPC cookie override is missing", errors)
+    require("- -max-conns=512" in compose,
+            "home-LAN miner connection cap must be 512", errors)
+    require("-allow-rpc-creds" not in compose,
+            "deprecated secrets-file RPC authentication must not be enabled", errors)
     require("pool_fee_percent = 2.0" in config, "default pool fee must be 2%", errors)
     require("operator_donation_percent = 0.0" in config,
             "operator donation split must be disabled", errors)
     require(f'payout_address = "{FEE_ADDRESS}"' in config,
             "default fee payout address is incorrect", errors)
+    require('pool_entropy = ""' in config,
+            "pool entropy must be generated uniquely on first start", errors)
+    require('rpc_cookie_path = "/bitcoin/.cookie"' in config,
+            "default RPC cookie path is incorrect", errors)
+    require('server_location = "Home LAN"' in config,
+            "home-LAN location label is missing", errors)
+    require('stratum_tls_listen = ""' in config,
+            "Stratum TLS must be disabled by default", errors)
     require("__BITCOIN_NODE_IP__" in config, "Bitcoin node template address is missing", errors)
 
     if errors:

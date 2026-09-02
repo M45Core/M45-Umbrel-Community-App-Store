@@ -27,19 +27,10 @@ services:
             -e "s|__BITCOIN_ZMQ_HASHBLOCK_PORT__|$${APP_BITCOIN_ZMQ_HASHBLOCK_PORT}|g" \
             /data/config/config.toml.default > /data/config/config.toml
         fi
-        case "$${APP_BITCOIN_RPC_USER}$${APP_BITCOIN_RPC_PASS}" in
-          *"'"*)
-            echo "Umbrel Bitcoin RPC credentials contain an unsupported quote character." >&2
-            exit 1
-            ;;
-        esac
-        umask 077
-        {
-          printf "rpc_user = '%s'\n" "$${APP_BITCOIN_RPC_USER}"
-          printf "rpc_pass = '%s'\n" "$${APP_BITCOIN_RPC_PASS}"
-        } > /data/config/umbrel-secrets.toml
+        if grep -Eq '^[[:space:]]*pool_entropy[[:space:]]*=[[:space:]]*"umbrel"[[:space:]]*$' /data/config/config.toml; then
+          sed -i 's/^[[:space:]]*pool_entropy[[:space:]]*=.*/  pool_entropy = ""/' /data/config/config.toml
+        fi
         chmod 0644 /data/config/config.toml
-        chmod 0600 /data/config/umbrel-secrets.toml
         chown -R 1000:1000 /data
     volumes:
       - ${APP_DATA_DIR}/data:/data
@@ -47,8 +38,6 @@ services:
       APP_BITCOIN_NETWORK: ${APP_BITCOIN_NETWORK}
       APP_BITCOIN_NODE_IP: ${APP_BITCOIN_NODE_IP}
       APP_BITCOIN_RPC_PORT: ${APP_BITCOIN_RPC_PORT}
-      APP_BITCOIN_RPC_USER: ${APP_BITCOIN_RPC_USER}
-      APP_BITCOIN_RPC_PASS: ${APP_BITCOIN_RPC_PASS}
       APP_BITCOIN_ZMQ_RAWBLOCK_PORT: ${APP_BITCOIN_ZMQ_RAWBLOCK_PORT}
       APP_BITCOIN_ZMQ_HASHBLOCK_PORT: ${APP_BITCOIN_ZMQ_HASHBLOCK_PORT}
 
@@ -63,18 +52,17 @@ services:
         condition: service_completed_successfully
     ports:
       - "23456:23456/tcp"
-      - "24333:24333/tcp"
     volumes:
       - ${APP_DATA_DIR}/data:/app/data
+      - ${APP_BITCOIN_DATA_DIR}:/bitcoin:ro
     command:
       - -stdout
       - -pool-log=/dev/null
       - -network=mainnet
       - -rpc-url=http://${APP_BITCOIN_NODE_IP}:${APP_BITCOIN_RPC_PORT}
-      - -secrets=/app/data/config/umbrel-secrets.toml
-      - -allow-rpc-creds
+      - -rpc-cookie=/bitcoin/.cookie
+      - -max-conns=512
       - -listen=:23456
       - -status=:8080
       - -status-tls=
-      - -stratum-tls=:24333
       - -saved-workers-local-noauth

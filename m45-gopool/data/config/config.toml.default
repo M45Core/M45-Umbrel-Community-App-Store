@@ -5,7 +5,7 @@
 [branding]
   fiat_currency = "usd"
   pool_donation_address = ""
-  server_location = ""
+  server_location = "Home LAN"
   status_brand_domain = ""
   status_brand_name = "M45Core"
   status_connect_miner_title_extra = ""
@@ -21,13 +21,14 @@
   operator_donation_name = ""
   operator_donation_percent = 0.0
   operator_donation_url = ""
-  pool_entropy = "umbrel"
+  # Empty on first start so goPool generates and persists a unique 4-character tag.
+  pool_entropy = ""
   pool_fee_percent = 2.0
   pooltag_prefix = "M45"
 
 [node]
   payout_address = "3B86bWqfjdQeLEr8nkeeWU6ygksc2K7MoL"
-  rpc_cookie_path = ""
+  rpc_cookie_path = "/bitcoin/.cookie"
   rpc_url = "http://__BITCOIN_NODE_IP__:__BITCOIN_RPC_PORT__"
   zmq_hashblock_addr = "tcp://__BITCOIN_NODE_IP__:__BITCOIN_ZMQ_HASHBLOCK_PORT__"
   zmq_rawblock_addr = "tcp://__BITCOIN_NODE_IP__:__BITCOIN_ZMQ_RAWBLOCK_PORT__"
@@ -43,5 +44,5 @@
   stratum_password = ""
   stratum_password_enabled = false
   stratum_password_public = false
-  stratum_tls_listen = ":24333"
+  stratum_tls_listen = ""
   stratum_v2_listen = ""
