@@ -53,6 +53,7 @@ create_container() {
     --detach \
     --privileged \
     --network host \
+    --restart unless-stopped \
     --stop-timeout 120 \
     --volume "${DATA_VOLUME}:/data" \
     "${UMBREL_IMAGE}" \

@@ -81,9 +81,10 @@ Useful commands:
 ./scripts/umbrel-container.sh start
 ```
 
-`stop`, `start`, `restart`, and `recreate` preserve the named data volume. The
-only command that deletes the Umbrel install, Bitcoin chain, and app data is
-the deliberately explicit:
+`stop`, `start`, `restart`, host reboots, and `recreate` preserve the named data
+volume. Unless you intentionally stop it, the container resumes after a Docker
+daemon or host restart. The only command that deletes the Umbrel install,
+Bitcoin chain, and app data is the deliberately explicit:
 
 ```bash
 ./scripts/umbrel-container.sh destroy --yes
