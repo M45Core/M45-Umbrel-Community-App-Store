@@ -2,7 +2,7 @@ manifestVersion: 1
 id: m45-gopool
 category: bitcoin
 name: M45 goPool
-version: "0.1.1"
+version: "0.1.2"
 tagline: Run a private solo Bitcoin mining pool
 description: >-
   M45 goPool connects your miners directly to your Umbrel Bitcoin Node and
@@ -30,19 +30,10 @@ icon: https://raw.githubusercontent.com/M45Core/M45-goPool/main/data/M45CORE-102
 gallery: []
 path: ""
 releaseNotes: |-
-  ## What's Changed
-  * Version bits by @Distortions81 in https://github.com/M45Core/M45-goPool/pull/27
-  * 4-27 fixes by @Distortions81 in https://github.com/M45Core/M45-goPool/pull/30
-  * Increase dropdown menu z index by @trcjr in https://github.com/M45Core/M45-goPool/pull/29
-  * Add Docker/Compose deployment support and publish container images to GHCR by @trcjr in https://github.com/M45Core/M45-goPool/pull/28
-  
-  ## New Contributors
-  * @trcjr made their first contribution in https://github.com/M45Core/M45-goPool/pull/29
-  
-  **Full Changelog**: https://github.com/M45Core/M45-goPool/commits/v0.1.1
+  **Full Changelog**: https://github.com/M45Core/M45-goPool/compare/v0.1.1...v0.1.2
   
   
-  Full release: https://github.com/M45Core/M45-goPool/releases/tag/v0.1.1
+  Full release: https://github.com/M45Core/M45-goPool/releases/tag/v0.1.2
 defaultUsername: ""
 defaultPassword: ""
 backupIgnore:
