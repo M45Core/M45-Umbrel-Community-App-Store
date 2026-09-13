@@ -63,6 +63,7 @@ services:
       - -rpc-cookie=/bitcoin/.cookie
       - -max-conns=512
       - -listen=:23456
+      - -stratum-tls=off
       - -status=:8080
-      - -status-tls=
+      - -status-tls=off
       - -saved-workers-local-noauth

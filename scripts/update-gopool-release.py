@@ -53,7 +53,7 @@ def version_key(value: str) -> tuple[int, int, int, int, str] | None:
     )
 
 
-def update_manifest(path: Path, tag: str, release_notes: str) -> None:
+def update_manifest(path: Path, tag: str, release_notes: str, gallery_url: str) -> None:
     old_version = current_manifest_version(path)
     old_key = version_key(old_version)
     new_key = version_key(tag)
@@ -62,6 +62,7 @@ def update_manifest(path: Path, tag: str, release_notes: str) -> None:
 
     lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
     lines = replace_top_level_field(lines, "version", [f'version: "{tag.removeprefix("v")}"\n'])
+    lines = replace_top_level_field(lines, "gallery", ["gallery:\n", f"  - {gallery_url}\n"])
 
     notes = release_notes.strip()
     note_lines = ["releaseNotes: |-\n"]
@@ -106,6 +107,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--umbrel-version", required=True)
     parser.add_argument("--image", required=True)
     parser.add_argument("--digest", required=True)
+    parser.add_argument("--gallery-url", required=True)
     parser.add_argument("--release-notes-file", type=Path, required=True)
     return parser.parse_args()
 
@@ -121,6 +123,14 @@ def main() -> None:
         raise SystemExit(f"unexpected image: {args.image}; expected {EXPECTED_IMAGE}")
     if DIGEST.fullmatch(args.digest) is None:
         raise SystemExit(f"invalid image digest: {args.digest}")
+    expected_gallery_url = (
+        "https://github.com/M45Core/M45-goPool/releases/download/"
+        f"{args.tag}/umbrel-dashboard.png"
+    )
+    if args.gallery_url != expected_gallery_url:
+        raise SystemExit(
+            f"unexpected gallery URL: {args.gallery_url}; expected {expected_gallery_url}"
+        )
 
     app_dir = args.app_dir.resolve()
     manifest = app_dir / "umbrel-app.yml"
@@ -145,6 +155,7 @@ def main() -> None:
         manifest,
         umbrel_tag,
         args.release_notes_file.read_text(encoding="utf-8"),
+        args.gallery_url,
     )
     update_compose(compose, image_ref)
     (app_dir / "VERSION").write_text(f"{umbrel_tag}\n", encoding="utf-8")

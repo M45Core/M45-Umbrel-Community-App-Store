@@ -113,11 +113,15 @@ For each semantic release tag, the source workflow:
 
 1. creates the GitHub release if necessary;
 2. builds `linux/amd64` and `linux/arm64` images;
-3. publishes an immutable version tag to `ghcr.io/m45core/m45-gopool`; and
-4. dispatches the resulting multi-platform digest to this repository.
+3. publishes an immutable version tag to `ghcr.io/m45core/m45-gopool`;
+4. runs that exact image with synthetic, representative metrics and captures
+   its current dashboard template and CSS; and
+5. dispatches the resulting multi-platform digest and release-specific
+   screenshot URL to this repository.
 
-This repository verifies the source tag and image digest, updates the app
-release notes/image pin, validates the package, and commits the update. The
+This repository verifies the source tag, image digest, and gallery image,
+updates the app release notes, image pin, and gallery, validates the package,
+and commits the update. The
 Umbrel package version can be independent of the goPool source tag; the tagged
 source's `UMBREL_VERSION` file supplies it. Release `v0.1.1` replaces the
 existing `0.1.0` bootstrap package and keeps both version numbers aligned. The

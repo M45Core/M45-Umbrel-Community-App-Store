@@ -63,7 +63,13 @@ def main() -> int:
             "manifest support link must open the M45 user manual", errors)
     require("Setup guide and user manual: https://m45core.com/umbrel" in manifest,
             "manifest description must show the M45 user manual", errors)
-    require("gallery: []" in manifest, "gallery must remain empty until current screenshots exist", errors)
+    if manifest_version_match is not None:
+        gallery_url = (
+            "https://github.com/M45Core/M45-goPool/releases/download/"
+            f"v{manifest_version_match.group(1)}/umbrel-dashboard.png"
+        )
+        require(f"gallery:\n  - {gallery_url}\n" in manifest,
+                "gallery must use the screenshot from the matching source release", errors)
     require("APP_HOST: m45-gopool_server_1" in compose, "app_proxy host is incorrect", errors)
     require("APP_PORT: 8080" in compose, "app_proxy port is incorrect", errors)
     require(PINNED_IMAGE.search(compose) is not None, "server image must be tag-and-digest pinned", errors)
@@ -72,7 +78,8 @@ def main() -> int:
     require("network_mode:" not in compose, "custom network_mode is not expected", errors)
     require('"23456:23456/tcp"' in compose, "plain Stratum port is missing", errors)
     require("24333" not in compose, "self-signed Stratum TLS port must not be published", errors)
-    require("-stratum-tls" not in compose, "Stratum TLS runtime override must remain disabled", errors)
+    require("- -stratum-tls=off" in compose, "Stratum TLS runtime override must disable TLS", errors)
+    require("- -status-tls=off" in compose, "status TLS runtime override must disable TLS", errors)
     require("${APP_BITCOIN_DATA_DIR}:/bitcoin:ro" in compose,
             "Bitcoin data must be mounted read-only for RPC cookie auth", errors)
     require("- -rpc-cookie=/bitcoin/.cookie" in compose,

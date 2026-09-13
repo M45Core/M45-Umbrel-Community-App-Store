@@ -27,7 +27,8 @@ repo: https://github.com/M45Core/M45-goPool
 support: https://m45core.com/umbrel
 port: 23080
 icon: https://raw.githubusercontent.com/M45Core/M45-goPool/main/data/M45CORE-1024.PNG
-gallery: []
+gallery:
+  - https://github.com/M45Core/M45-goPool/releases/download/v0.1.2/umbrel-dashboard.png
 path: ""
 releaseNotes: |-
   **Full Changelog**: https://github.com/M45Core/M45-goPool/compare/v0.1.1...v0.1.2
