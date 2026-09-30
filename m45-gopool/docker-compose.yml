@@ -42,7 +42,7 @@ services:
       APP_BITCOIN_ZMQ_HASHBLOCK_PORT: ${APP_BITCOIN_ZMQ_HASHBLOCK_PORT}
 
   server:
-    image: ghcr.io/m45core/m45-gopool:v0.1.2@sha256:c3b76cc69ee0f3386d580c4d8977e2f5cc0a526ac7d8448d02a73fc3162ccd5d
+    image: ghcr.io/m45core/m45-gopool:v0.1.3@sha256:5793c02fd9c0d634aad01bc0691507c8704271ae31a5aa0dff3f0a09aa7b20ba
     user: "1000:1000"
     init: true
     restart: on-failure

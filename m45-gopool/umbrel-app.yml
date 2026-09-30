@@ -2,7 +2,7 @@ manifestVersion: 1
 id: m45-gopool
 category: bitcoin
 name: M45 goPool
-version: "0.1.2"
+version: "0.1.3"
 tagline: Run a private solo Bitcoin mining pool
 description: >-
   M45 goPool connects your miners directly to your Umbrel Bitcoin Node and
@@ -28,13 +28,22 @@ support: https://m45core.com/umbrel
 port: 23080
 icon: https://raw.githubusercontent.com/M45Core/M45-goPool/main/data/M45CORE-1024.PNG
 gallery:
-  - https://github.com/M45Core/M45-goPool/releases/download/v0.1.2/umbrel-dashboard.png
+  - https://github.com/M45Core/M45-goPool/releases/download/v0.1.3/umbrel-dashboard.png
 path: ""
 releaseNotes: |-
-  **Full Changelog**: https://github.com/M45Core/M45-goPool/compare/v0.1.1...v0.1.2
+  This release improves share processing efficiency, block serialization, and pool statistics.
+  
+  - Reduce allocations in payout output construction, submit latency reporting, and duplicate-share tracking.
+  - Include the coinbase witness in submitted and saved SegWit blocks. Bitcoin Core previously filled in the missing witness during submission.
+  - Correct compact-target decoding for small exponents and reject negative or overflowing targets.
+  - Honor `status_listen = ""` to disable HTTP and preserve that setting when rewriting configuration.
+  - Fix concurrent share-rate snapshots and miner shutdown accounting. Shares completed after disconnect remain in pool totals without restoring the disconnected miner's hashrate.
+  
+  **Full Changelog**: https://github.com/M45Core/M45-goPool/compare/v0.1.2...v0.1.3
   
   
-  Full release: https://github.com/M45Core/M45-goPool/releases/tag/v0.1.2
+  
+  Full release: https://github.com/M45Core/M45-goPool/releases/tag/v0.1.3
 defaultUsername: ""
 defaultPassword: ""
 backupIgnore:
